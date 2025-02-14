@@ -9,7 +9,20 @@
 				"inputs": [],
 				"name": "fund",
 				"outputs": [],
-				"stateMutability": "nonpayable",
+				"stateMutability": "payable",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "minimumUsd",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "view",
 				"type": "function"
 			},
 			{
@@ -48,11 +61,11 @@
 	},
 	"sources": {
 		"contracts/FundMe.sol": {
-			"keccak256": "0x118a843920e6137791a26e75b7b7e24c17399f19dc324a512afe0d8f3ea1883c",
+			"keccak256": "0x9f64d928f29e00f8b49adec846d193043dba13c881026befab0f75db68420b4c",
 			"license": "MIT",
 			"urls": [
-				"bzz-raw://d1f5c287f63032694a10450577819b0eaec55f78a80bdb5abf7c316f8947e978",
-				"dweb:/ipfs/QmYnqrhnQk121TWbqxCrc6ETpxTV93g9MLNzTt7UQFFAep"
+				"bzz-raw://eaf1ed24bb919c97c10113f3737c2e3e37b3d8bd38d2f48c93a61281f80ca1fa",
+				"dweb:/ipfs/QmRwpkaXt4FBtm74aGso8U2aMT37T6L93cbnjZN4RWXDQJ"
 			]
 		}
 	},
