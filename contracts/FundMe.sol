@@ -10,6 +10,12 @@ contract FundMe {
     address[] public funders;
     mapping(address => uint256) public addressToAmountFunded;
 
+    address public owner;
+
+    constructor() {
+        owner = msg.sender;
+    }
+
     function fund() public payable {
         // require user to minimum send 5$ worth of wei, need to convert to wei
         // why parameter empty? because the value that called the function are already passed as parameter
@@ -21,7 +27,7 @@ contract FundMe {
         addressToAmountFunded[msg.sender] += msg.value;
     }
 
-    function withdraw() public {
+    function withdraw() public onlyOwner {
         for (
             uint256 funderIndex = 0;
             funderIndex < funders.length;
@@ -46,5 +52,14 @@ contract FundMe {
             value: address(this).balance
         }("");
         require(callSuccess, "Call failed");
+    }
+
+    // decorator
+    modifier onlyOwner() {
+        // require first then _ because it will call the require first then run the rest of the code
+        // if _ first then the require, it will run the code first then require
+        // the order of the _ is matter
+        require(msg.sender == owner, "Sender is not owner!");
+        _;
     }
 }
