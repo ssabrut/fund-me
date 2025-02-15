@@ -1,6 +1,6 @@
 {
 	"compiler": {
-		"version": "0.8.24+commit.e11b9ed9"
+		"version": "0.8.18+commit.87f61d96"
 	},
 	"language": "Solidity",
 	"output": {
@@ -51,38 +51,6 @@
 				"type": "function"
 			},
 			{
-				"inputs": [
-					{
-						"internalType": "uint256",
-						"name": "_ethAmount",
-						"type": "uint256"
-					}
-				],
-				"name": "getConversionRate",
-				"outputs": [
-					{
-						"internalType": "uint256",
-						"name": "",
-						"type": "uint256"
-					}
-				],
-				"stateMutability": "view",
-				"type": "function"
-			},
-			{
-				"inputs": [],
-				"name": "getPrice",
-				"outputs": [
-					{
-						"internalType": "uint256",
-						"name": "",
-						"type": "uint256"
-					}
-				],
-				"stateMutability": "view",
-				"type": "function"
-			},
-			{
 				"inputs": [],
 				"name": "minimumUsd",
 				"outputs": [
@@ -118,7 +86,7 @@
 		"compilationTarget": {
 			"contracts/FundMe.sol": "FundMe"
 		},
-		"evmVersion": "shanghai",
+		"evmVersion": "paris",
 		"libraries": {},
 		"metadata": {
 			"bytecodeHash": "ipfs"
@@ -139,11 +107,19 @@
 			]
 		},
 		"contracts/FundMe.sol": {
-			"keccak256": "0x4c74f29cd4fef82d341001d0b32d0ce66adaa2e12af94558050b26af508443c6",
+			"keccak256": "0xa842ad817053981068e65d9afcb283766ce91d5a710636cdf88e515be7b9f416",
 			"license": "MIT",
 			"urls": [
-				"bzz-raw://0486774a8122cec33d254604903390973e08e6bb4060df5b3f3e1967a930bf6d",
-				"dweb:/ipfs/QmTH9tK6p8CxP9EdRtDsAuEQz8GfU2mxi9Z72iCVULU9B7"
+				"bzz-raw://918584460734c51be047bd0ff981822de43523a30aeed9d1df61380a6f51dc07",
+				"dweb:/ipfs/Qmf6B6jXH91tfjt3WckoZJpBRDEpXDCzKFHRXD9gUjuHgu"
+			]
+		},
+		"contracts/PriceConverter.sol": {
+			"keccak256": "0x98c63b0ac40c43e9aee6218d534f2b4f3bf1ad0a1a00f56428b8a01f20e527f1",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://0960e778299b420c29cdec42d1e1f5ad5467b7ee2398c62fd0c50b3bacce6f7b",
+				"dweb:/ipfs/QmUNFGqvGcBDM6jm71wDEcbiqSeUkPdgr54uNU1kRfLguq"
 			]
 		}
 	},

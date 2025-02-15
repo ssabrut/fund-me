@@ -17,12 +17,34 @@ contract FundMe {
             msg.value.getConversionRate() >= minimumUsd,
             "Didn't sent enough ETH"
         );
-
         funders.push(msg.sender);
-        addressToAmountFunded[msg.sender] =
-            addressToAmountFunded[msg.sender] +
-            msg.value;
+        addressToAmountFunded[msg.sender] += msg.value;
     }
 
-    function withdraw() public {}
+    function withdraw() public {
+        for (
+            uint256 funderIndex = 0;
+            funderIndex < funders.length;
+            funderIndex++
+        ) {
+            address funder = funders[funderIndex];
+            addressToAmountFunded[funder] = 0;
+        }
+
+        // reset the array
+        funders = new address[](0);
+
+        // // transfer the fund using "transfer", if error revert the transaction
+        // payable(msg.sender).transfer(address(this).balance);
+
+        // // transfer the fund using "send" return bool
+        // bool isSuccess = payable(msg.sender).send(address(this).balance);
+        // require(isSuccess, "Send failed");
+
+        // transfer the fund using "call" return bool
+        (bool callSuccess, ) = payable(msg.sender).call{
+            value: address(this).balance
+        }("");
+        require(callSuccess, "Call failed");
+    }
 }
