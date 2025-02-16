@@ -3,24 +3,36 @@ pragma solidity ^0.8.18;
 
 import { PriceConverter } from "./PriceConverter.sol";
 
+error notOwner();
+
+// 810.098 gas
+// 790.140 gas (after using constant)
 contract FundMe {
     using PriceConverter for uint256;
 
-    uint256 public minimumUsd = 5e18;
+    uint256 public constant MINIMUM_USD = 5e18;
     address[] public funders;
     mapping(address => uint256) public addressToAmountFunded;
 
-    address public owner;
+    address public immutable i_owner;
 
     constructor() {
-        owner = msg.sender;
+        i_owner = msg.sender;
+    }
+
+    receive() external payable {
+        fund();
+    }
+
+    fallback() external payable {
+        fund();
     }
 
     function fund() public payable {
         // require user to minimum send 5$ worth of wei, need to convert to wei
         // why parameter empty? because the value that called the function are already passed as parameter
         require(
-            msg.value.getConversionRate() >= minimumUsd,
+            msg.value.getConversionRate() >= MINIMUM_USD,
             "Didn't sent enough ETH"
         );
         funders.push(msg.sender);
@@ -40,13 +52,6 @@ contract FundMe {
         // reset the array
         funders = new address[](0);
 
-        // // transfer the fund using "transfer", if error revert the transaction
-        // payable(msg.sender).transfer(address(this).balance);
-
-        // // transfer the fund using "send" return bool
-        // bool isSuccess = payable(msg.sender).send(address(this).balance);
-        // require(isSuccess, "Send failed");
-
         // transfer the fund using "call" return bool
         (bool callSuccess, ) = payable(msg.sender).call{
             value: address(this).balance
@@ -56,10 +61,11 @@ contract FundMe {
 
     // decorator
     modifier onlyOwner() {
-        // require first then _ because it will call the require first then run the rest of the code
         // if _ first then the require, it will run the code first then require
         // the order of the _ is matter
-        require(msg.sender == owner, "Sender is not owner!");
+        if (msg.sender != i_owner) {
+            revert notOwner(); // replacement for "require" function for gas efficiency
+        }
         _;
     }
 }
