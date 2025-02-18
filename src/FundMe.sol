@@ -12,8 +12,8 @@ contract FundMe {
     using PriceConverter for uint256;
 
     uint256 public constant MINIMUM_USD = 5e18;
-    address[] public funders;
-    mapping(address => uint256) public addressToAmountFunded;
+    address[] private s_funders;
+    mapping(address => uint256) private s_addressToAmountFunded;
 
     address public immutable i_owner;
     AggregatorV3Interface private s_priceFeed;
@@ -38,22 +38,22 @@ contract FundMe {
             msg.value.getConversionRate(s_priceFeed) >= MINIMUM_USD,
             "Didn't sent enough ETH"
         );
-        funders.push(msg.sender);
-        addressToAmountFunded[msg.sender] += msg.value;
+        s_funders.push(msg.sender);
+        s_addressToAmountFunded[msg.sender] += msg.value;
     }
 
     function withdraw() public onlyOwner {
         for (
             uint256 funderIndex = 0;
-            funderIndex < funders.length;
+            funderIndex < s_funders.length;
             funderIndex++
         ) {
-            address funder = funders[funderIndex];
-            addressToAmountFunded[funder] = 0;
+            address funder = s_funders[funderIndex];
+            s_addressToAmountFunded[funder] = 0;
         }
 
         // reset the array
-        funders = new address[](0);
+        s_funders = new address[](0);
 
         // transfer the fund using "call" return bool
         (bool callSuccess, ) = payable(msg.sender).call{
@@ -64,6 +64,16 @@ contract FundMe {
 
     function getVersion() public view returns (uint256) {
         return s_priceFeed.version();
+    }
+
+    function getAddressToAmountFunded(
+        address fundingAddress
+    ) external view returns (uint256) {
+        return s_addressToAmountFunded[fundingAddress];
+    }
+
+    function getFunder(uint256 index) external view returns (address) {
+        return s_funders[index];
     }
 
     // decorator
